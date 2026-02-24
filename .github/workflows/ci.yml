@@ -58,3 +58,7 @@ jobs:
         run: |
           chezmoi source-path
           test -f "$HOME/.gitconfig"
+
+      - name: Verify runtimes installed
+        run: |
+          mise list rust | grep -q "rust"
