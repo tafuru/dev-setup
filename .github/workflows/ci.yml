@@ -61,6 +61,6 @@ jobs:
 
       - name: Verify runtimes installed
         run: |
-          mise list rust | grep -q "rust"
-          mise list node | grep -q "node"
-          mise list python | grep -q "python"
+          grep -E '^\w+ =' "$HOME/.config/mise/config.toml" | cut -d= -f1 | tr -d ' ' | while read -r tool; do
+            mise list "$tool" | grep -q "$tool" || (echo "Missing runtime: $tool" && exit 1)
+          done
