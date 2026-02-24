@@ -44,7 +44,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/tafuru/dev-setup/main/se
 
 `setup.sh` runs the following in order:
 
-1. **[cmdtools](https://github.com/tafuru/cmdtools)** — Install CLI tools via Homebrew (macOS) or apt + GitHub Releases (Linux)
+1. **[cmdtools](https://github.com/tafuru/cmdtools)** — Install CLI tools via Homebrew (macOS) or apt + GitHub Releases (Ubuntu/Debian)
 2. **[dotfiles](https://github.com/tafuru/dotfiles)** — Apply configuration files via chezmoi
 3. **mise install** — Install runtimes defined in `~/.config/mise/config.toml` (Rust, Node.js, Python, etc.)
 4. **[devtools](https://github.com/tafuru/devtools)** *(optional, `--devtools`)* — Install GUI apps and fonts
