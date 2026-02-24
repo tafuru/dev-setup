@@ -31,13 +31,7 @@ bash setup.sh --repos
 If you have forked or created your own dotfiles repository compatible with chezmoi, pass it with `--dotfiles`:
 
 ```bash
-bash setup.sh --dotfiles github.com/yourname/dotfiles
-```
-
-This also works with `--repos` to clone your dotfiles locally:
-
-```bash
-bash setup.sh --repos --dotfiles github.com/yourname/dotfiles
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/tafuru/dev-setup/main/setup.sh)" -- --dotfiles github.com/yourname/dotfiles
 ```
 
 ## What It Does
