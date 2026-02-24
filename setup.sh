@@ -48,7 +48,7 @@ info "[2/2] Applying dotfiles"
 if [ "$REPOS" = true ] || [ -d "$REPOS_DIR/dotfiles" ]; then
   clone_or_update dotfiles
   chezmoi init --apply --source "$REPOS_DIR/dotfiles/home"
-elif chezmoi source-path &>/dev/null 2>&1; then
+elif [ -d "$(chezmoi source-path 2>/dev/null)" ]; then
   chezmoi apply
 else
   chezmoi init --apply "github.com/$GITHUB_USER/dotfiles"
