@@ -5,6 +5,7 @@ GITHUB_USER="tafuru"
 REPOS_DIR="$HOME/repos/github.com/$GITHUB_USER"
 DOTFILES_REPO="github.com/$GITHUB_USER/dotfiles"
 REPOS=false
+DEVTOOLS=false
 
 info()    { echo "[dev-setup] $*"; }
 success() { echo "[dev-setup] ✓ $*"; }
@@ -15,10 +16,14 @@ while [ $# -gt 0 ]; do
   case "$1" in
     --repos)     REPOS=true ;;
     --dotfiles)  shift; DOTFILES_REPO="$1" ;;
+    --devtools)  DEVTOOLS=true ;;
     *)           fatal "Unknown option: $1" ;;
   esac
   shift
 done
+
+TOTAL_STEPS=3
+[ "$DEVTOOLS" = true ] && TOTAL_STEPS=4
 
 clone_or_update() {
   local repo="$1"
@@ -34,21 +39,21 @@ clone_or_update() {
   fi
 }
 
-# [1/3] CLI tools
-info "[1/3] Installing CLI tools"
+# [1/N] CLI tools
+info "[1/${TOTAL_STEPS}] Installing CLI tools"
 if [ "$REPOS" = true ] || [ -d "$REPOS_DIR/cmdtools" ]; then
   clone_or_update cmdtools
   bash "$REPOS_DIR/cmdtools/install.sh"
 else
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/$GITHUB_USER/cmdtools/main/install.sh)"
 fi
-success "[1/3] CLI tools installed"
+success "[1/${TOTAL_STEPS}] CLI tools installed"
 
 # Ensure chezmoi (installed to ~/.local/bin on Linux by cmdtools) is in PATH
 export PATH="$HOME/.local/bin:$PATH"
 
-# [2/3] Dotfiles
-info "[2/3] Applying dotfiles"
+# [2/N] Dotfiles
+info "[2/${TOTAL_STEPS}] Applying dotfiles"
 DOTFILES_GH_PATH="${DOTFILES_REPO#github.com/}"
 DOTFILES_DIR="$HOME/repos/github.com/$DOTFILES_GH_PATH"
 if [ "$REPOS" = true ] || [ -d "$DOTFILES_DIR" ]; then
@@ -67,12 +72,24 @@ elif [ -d "$(chezmoi source-path 2>/dev/null)" ]; then
 else
   chezmoi init --apply "$DOTFILES_REPO"
 fi
-success "[2/3] Dotfiles applied"
+success "[2/${TOTAL_STEPS}] Dotfiles applied"
 
-# [3/3] Runtimes
-info "[3/3] Installing runtimes via mise"
+# [3/N] Runtimes
+info "[3/${TOTAL_STEPS}] Installing runtimes via mise"
 mise install
-success "[3/3] Runtimes installed"
+success "[3/${TOTAL_STEPS}] Runtimes installed"
+
+# [4/4] GUI apps and fonts (optional)
+if [ "$DEVTOOLS" = true ]; then
+  info "[4/4] Installing GUI apps and fonts"
+  if [ "$REPOS" = true ] || [ -d "$REPOS_DIR/devtools" ]; then
+    clone_or_update devtools
+    bash "$REPOS_DIR/devtools/install.sh"
+  else
+    bash -c "$(curl -fsSL https://raw.githubusercontent.com/$GITHUB_USER/devtools/main/install.sh)"
+  fi
+  success "[4/4] GUI apps and fonts installed"
+fi
 
 echo ""
 success "Setup complete — restart your shell to apply changes"

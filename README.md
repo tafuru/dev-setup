@@ -26,6 +26,12 @@ To clone both repositories under `~/repos/github.com/tafuru/` from scratch and m
 bash setup.sh --repos
 ```
 
+To also install GUI apps and fonts via [devtools](https://github.com/tafuru/devtools):
+
+```bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/tafuru/dev-setup/main/setup.sh)" -- --devtools
+```
+
 ## Using Your Own Dotfiles
 
 If you have forked or created your own dotfiles repository compatible with chezmoi, pass it with `--dotfiles`:
@@ -41,6 +47,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/tafuru/dev-setup/main/se
 1. **[cmdtools](https://github.com/tafuru/cmdtools)** — Install CLI tools via Homebrew (macOS) or apt + GitHub Releases (Linux)
 2. **[dotfiles](https://github.com/tafuru/dotfiles)** — Apply configuration files via chezmoi
 3. **mise install** — Install runtimes defined in `~/.config/mise/config.toml` (Rust, Node.js, Python, etc.)
+4. **[devtools](https://github.com/tafuru/devtools)** *(optional, `--devtools`)* — Install GUI apps and fonts (VSCode, Docker, Ghostty, 1Password, HackGen Nerd Font)
 
 ## Repository Structure
 
@@ -49,6 +56,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/tafuru/dev-setup/main/se
 | [dev-setup](https://github.com/tafuru/dev-setup) | Setup entry point (this repository) |
 | [cmdtools](https://github.com/tafuru/cmdtools) | CLI tool installation |
 | [dotfiles](https://github.com/tafuru/dotfiles) | Configuration file management (chezmoi) |
+| [devtools](https://github.com/tafuru/devtools) | GUI apps and fonts (optional) |
 
 ## License
 
