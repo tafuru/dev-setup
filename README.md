@@ -26,6 +26,20 @@ To clone both repositories under `~/repos/github.com/tafuru/` from scratch and m
 bash setup.sh --repos
 ```
 
+## Using Your Own Dotfiles
+
+If you have forked or created your own dotfiles repository compatible with chezmoi, pass it with `--dotfiles`:
+
+```bash
+bash setup.sh --dotfiles github.com/yourname/dotfiles
+```
+
+This also works with `--repos` to clone your dotfiles locally:
+
+```bash
+bash setup.sh --repos --dotfiles github.com/yourname/dotfiles
+```
+
 ## What It Does
 
 `setup.sh` runs the following in order:

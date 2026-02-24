@@ -3,6 +3,7 @@ set -euo pipefail
 
 GITHUB_USER="tafuru"
 REPOS_DIR="$HOME/repos/github.com/$GITHUB_USER"
+DOTFILES_REPO="github.com/$GITHUB_USER/dotfiles"
 REPOS=false
 
 info()    { echo "[dev-setup] $*"; }
@@ -10,10 +11,13 @@ success() { echo "[dev-setup] ✓ $*"; }
 warn()    { echo "[dev-setup] ! $*" >&2; }
 fatal()   { echo "[dev-setup] ✗ $*" >&2; exit 1; }
 
-for arg in "$@"; do
-  case "$arg" in
-    --repos) REPOS=true ;;
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --repos)     REPOS=true ;;
+    --dotfiles)  shift; DOTFILES_REPO="$1" ;;
+    *)           fatal "Unknown option: $1" ;;
   esac
+  shift
 done
 
 clone_or_update() {
@@ -45,13 +49,23 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # [2/2] Dotfiles
 info "[2/2] Applying dotfiles"
-if [ "$REPOS" = true ] || [ -d "$REPOS_DIR/dotfiles" ]; then
-  clone_or_update dotfiles
-  chezmoi init --apply --source "$REPOS_DIR/dotfiles/home"
+DOTFILES_GH_PATH="${DOTFILES_REPO#github.com/}"
+DOTFILES_DIR="$HOME/repos/github.com/$DOTFILES_GH_PATH"
+if [ "$REPOS" = true ] || [ -d "$DOTFILES_DIR" ]; then
+  if [ -d "$DOTFILES_DIR/.git" ]; then
+    info "Updating dotfiles"
+    git -C "$DOTFILES_DIR" fetch --quiet origin
+    git -C "$DOTFILES_DIR" reset --hard origin/main
+  else
+    info "Cloning dotfiles"
+    mkdir -p "$(dirname "$DOTFILES_DIR")"
+    git clone "https://github.com/$DOTFILES_GH_PATH.git" "$DOTFILES_DIR"
+  fi
+  chezmoi init --apply --source "$DOTFILES_DIR/home"
 elif [ -d "$(chezmoi source-path 2>/dev/null)" ]; then
   chezmoi apply
 else
-  chezmoi init --apply "github.com/$GITHUB_USER/dotfiles"
+  chezmoi init --apply "$DOTFILES_REPO"
 fi
 success "[2/2] Dotfiles applied"
 
