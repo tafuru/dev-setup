@@ -35,7 +35,7 @@ jobs:
         uses: nick-fields/retry@v3
         with:
           timeout_minutes: 60
-          max_attempts: 3
+          max_attempts: 5
           command: bash setup.sh --repos
 
       - name: Run setup.sh (curl mode)
@@ -43,7 +43,7 @@ jobs:
         uses: nick-fields/retry@v3
         with:
           timeout_minutes: 60
-          max_attempts: 3
+          max_attempts: 5
           command: |
             BRANCH="${{ github.head_ref || github.ref_name }}"
             bash -c "$(curl -fsSL https://raw.githubusercontent.com/tafuru/dev-setup/${BRANCH}/setup.sh)"
