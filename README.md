@@ -29,7 +29,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/tafuru/dev-setup/main/se
 To also install GUI apps and fonts ([devtools](https://github.com/tafuru/devtools)):
 
 ```bash
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/tafuru/dev-setup/main/setup.sh)" -- --repos --devtools
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/tafuru/dev-setup/main/setup.sh)" -- --devtools
 ```
 
 ## Using Your Own Dotfiles
