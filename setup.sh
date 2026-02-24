@@ -17,6 +17,15 @@ while [ $# -gt 0 ]; do
     --repos)     REPOS=true ;;
     --dotfiles)  shift; DOTFILES_REPO="$1" ;;
     --devtools)  DEVTOOLS=true ;;
+    --help)
+      echo "Usage: setup.sh [options]"
+      echo ""
+      echo "Options:"
+      echo "  --repos              Clone all repos to ~/repos/github.com/tafuru/"
+      echo "  --dotfiles <repo>    Use a custom dotfiles repo (default: github.com/tafuru/dotfiles)"
+      echo "  --devtools           Install GUI apps and fonts via devtools"
+      echo "  --help               Show this help"
+      exit 0 ;;
     *)           fatal "Unknown option: $1" ;;
   esac
   shift
