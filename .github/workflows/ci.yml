@@ -62,3 +62,5 @@ jobs:
       - name: Verify runtimes installed
         run: |
           mise list rust | grep -q "rust"
+          mise list node | grep -q "node"
+          mise list python | grep -q "python"
