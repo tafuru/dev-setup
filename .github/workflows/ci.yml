@@ -69,3 +69,30 @@ jobs:
           grep -E '^\w+ =' "$HOME/.config/mise/config.toml" | cut -d= -f1 | tr -d ' ' | while read -r tool; do
             mise list "$tool" | grep -q "$tool" || (echo "Missing runtime: $tool" && exit 1)
           done
+
+  test-devtools-flag:
+    runs-on: ubuntu-latest
+    env:
+      CHEZMOI_GIT_NAME: CI
+      CHEZMOI_GIT_EMAIL: ci@example.com
+      CI: "true"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create mock devtools script
+        run: |
+          printf '#!/usr/bin/env bash\ntouch /tmp/devtools_called\n' > /tmp/mock-devtools.sh
+          chmod +x /tmp/mock-devtools.sh
+
+      - name: Run setup.sh --devtools (with mock)
+        uses: nick-fields/retry@v3
+        env:
+          DEVTOOLS_SCRIPT: /tmp/mock-devtools.sh
+        with:
+          timeout_minutes: 60
+          max_attempts: 5
+          command: bash setup.sh --repos --devtools
+
+      - name: Verify devtools was called
+        run: test -f /tmp/devtools_called

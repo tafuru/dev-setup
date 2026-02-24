@@ -82,7 +82,9 @@ success "[3/${TOTAL_STEPS}] Runtimes installed"
 # [4/4] GUI apps and fonts (optional)
 if [ "$DEVTOOLS" = true ]; then
   info "[4/4] Installing GUI apps and fonts"
-  if [ "$REPOS" = true ] || [ -d "$REPOS_DIR/devtools" ]; then
+  if [ -n "${DEVTOOLS_SCRIPT:-}" ]; then
+    bash "$DEVTOOLS_SCRIPT"
+  elif [ "$REPOS" = true ] || [ -d "$REPOS_DIR/devtools" ]; then
     clone_or_update devtools
     bash "$REPOS_DIR/devtools/install.sh"
   else
