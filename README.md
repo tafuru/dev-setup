@@ -20,16 +20,16 @@ bash setup.sh
 
 By default, `cmdtools` is installed via curl and `dotfiles` is managed by chezmoi. If `~/repos/github.com/tafuru/cmdtools` or `~/repos/github.com/tafuru/dotfiles` already exist, they are updated in place and used directly.
 
-To clone both repositories under `~/repos/github.com/tafuru/` from scratch and manage them locally:
+To also clone all repositories (dev-setup, cmdtools, dotfiles) under `~/repos/github.com/tafuru/` for local management:
 
 ```bash
-bash setup.sh --repos
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/tafuru/dev-setup/main/setup.sh)" -- --repos
 ```
 
-To also install GUI apps and fonts via [devtools](https://github.com/tafuru/devtools):
+To also install GUI apps and fonts ([devtools](https://github.com/tafuru/devtools)):
 
 ```bash
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/tafuru/dev-setup/main/setup.sh)" -- --devtools
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/tafuru/dev-setup/main/setup.sh)" -- --repos --devtools
 ```
 
 ## Using Your Own Dotfiles

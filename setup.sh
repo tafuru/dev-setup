@@ -39,6 +39,11 @@ clone_or_update() {
   fi
 }
 
+# Clone dev-setup itself when --repos is requested (curl mode leaves no local copy)
+if [ "$REPOS" = true ]; then
+  clone_or_update dev-setup
+fi
+
 # [1/N] CLI tools
 info "[1/${TOTAL_STEPS}] Installing CLI tools"
 if [ "$REPOS" = true ] || [ -d "$REPOS_DIR/cmdtools" ]; then
