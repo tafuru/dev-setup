@@ -47,7 +47,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/tafuru/dev-setup/main/se
 1. **[cmdtools](https://github.com/tafuru/cmdtools)** — Install CLI tools via Homebrew (macOS) or apt + GitHub Releases (Linux)
 2. **[dotfiles](https://github.com/tafuru/dotfiles)** — Apply configuration files via chezmoi
 3. **mise install** — Install runtimes defined in `~/.config/mise/config.toml` (Rust, Node.js, Python, etc.)
-4. **[devtools](https://github.com/tafuru/devtools)** *(optional, `--devtools`)* — Install GUI apps and fonts (VSCode, Docker, Ghostty, 1Password, HackGen Nerd Font)
+4. **[devtools](https://github.com/tafuru/devtools)** *(optional, `--devtools`)* — Install GUI apps and fonts
 
 ## Repository Structure
 
