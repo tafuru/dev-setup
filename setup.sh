@@ -66,16 +66,6 @@ success "[1/${TOTAL_STEPS}] CLI tools installed"
 # Ensure tools installed via Linuxbrew are in PATH for subsequent steps
 [ -x "/home/linuxbrew/.linuxbrew/bin/brew" ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
-# Set zsh as default shell if not already (ensures .zprofile is read on next login)
-if command -v zsh &>/dev/null && [ "$(basename "${SHELL:-}")" != "zsh" ]; then
-  ZSH_PATH="$(command -v zsh)"
-  if chsh -s "$ZSH_PATH" 2>/dev/null; then
-    info "Default shell set to zsh (takes effect on next login)"
-  else
-    warn "Could not set default shell to zsh — run: chsh -s $ZSH_PATH"
-  fi
-fi
-
 # [2/N] Dotfiles
 info "[2/${TOTAL_STEPS}] Applying dotfiles"
 DOTFILES_GH_PATH="${DOTFILES_REPO#github.com/}"
