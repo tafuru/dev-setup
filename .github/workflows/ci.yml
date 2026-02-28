@@ -48,9 +48,11 @@ jobs:
             BRANCH="${{ github.head_ref || github.ref_name }}"
             bash -c "$(curl -fsSL https://raw.githubusercontent.com/tafuru/dev-setup/${BRANCH}/setup.sh)"
 
-      - name: Add ~/.local/bin to PATH
+      - name: Add Linuxbrew to PATH
         if: runner.os == 'Linux'
-        run: echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+        run: |
+          echo "/home/linuxbrew/.linuxbrew/bin" >> "$GITHUB_PATH"
+          echo "/home/linuxbrew/.linuxbrew/sbin" >> "$GITHUB_PATH"
 
       - name: Verify CLI tools
         run: |
