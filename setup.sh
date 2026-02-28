@@ -63,8 +63,8 @@ else
 fi
 success "[1/${TOTAL_STEPS}] CLI tools installed"
 
-# Ensure chezmoi (installed to ~/.local/bin on Linux by cmdtools) is in PATH
-export PATH="$HOME/.local/bin:$PATH"
+# Ensure tools installed via Linuxbrew are in PATH for subsequent steps
+[ -x "/home/linuxbrew/.linuxbrew/bin/brew" ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 # [2/N] Dotfiles
 info "[2/${TOTAL_STEPS}] Applying dotfiles"
