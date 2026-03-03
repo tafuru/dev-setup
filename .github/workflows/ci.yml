@@ -75,6 +75,11 @@ jobs:
             mise list "$tool" | grep -q "$tool" || (echo "Missing runtime: $tool" && exit 1)
           done
 
+      - name: Verify Neovim plugins installed
+        run: |
+          test -d "$HOME/.local/share/nvim/lazy/lazy.nvim"
+          test -d "$HOME/.local/share/nvim/lazy/gruvbox.nvim"
+
   test-devtools-flag:
     runs-on: ubuntu-latest
     env:

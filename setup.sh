@@ -31,8 +31,8 @@ while [ $# -gt 0 ]; do
   shift
 done
 
-TOTAL_STEPS=3
-[ "$DEVTOOLS" = true ] && TOTAL_STEPS=4
+TOTAL_STEPS=4
+[ "$DEVTOOLS" = true ] && TOTAL_STEPS=5
 
 clone_or_update() {
   local repo="$1"
@@ -53,7 +53,7 @@ if [ "$REPOS" = true ]; then
   clone_or_update dev-setup
 fi
 
-# [1/N] CLI tools
+# [1/5] CLI tools
 info "[1/${TOTAL_STEPS}] Installing CLI tools"
 if [ "$REPOS" = true ] || [ -d "$REPOS_DIR/cmdtools" ]; then
   clone_or_update cmdtools
@@ -66,7 +66,7 @@ success "[1/${TOTAL_STEPS}] CLI tools installed"
 # Ensure tools installed via Linuxbrew are in PATH for subsequent steps
 [ -x "/home/linuxbrew/.linuxbrew/bin/brew" ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
-# [2/N] Dotfiles
+# [2/5] Dotfiles
 info "[2/${TOTAL_STEPS}] Applying dotfiles"
 DOTFILES_GH_PATH="${DOTFILES_REPO#github.com/}"
 DOTFILES_DIR="$HOME/repos/github.com/$DOTFILES_GH_PATH"
@@ -88,14 +88,23 @@ else
 fi
 success "[2/${TOTAL_STEPS}] Dotfiles applied"
 
-# [3/N] Runtimes
+# [3/5] Runtimes
 info "[3/${TOTAL_STEPS}] Installing runtimes via mise"
 mise install
 success "[3/${TOTAL_STEPS}] Runtimes installed"
 
-# [4/4] GUI apps and fonts (optional)
+# [4/5] Neovim plugins
+info "[4/${TOTAL_STEPS}] Syncing Neovim plugins"
+if command -v nvim >/dev/null 2>&1; then
+  nvim --headless '+Lazy! sync' +qa 2>&1 || warn "Neovim plugin sync encountered an issue"
+  success "[4/${TOTAL_STEPS}] Neovim plugins synced"
+else
+  warn "[4/${TOTAL_STEPS}] nvim not found — skipping plugin sync"
+fi
+
+# [5/5] GUI apps and fonts (optional)
 if [ "$DEVTOOLS" = true ]; then
-  info "[4/4] Installing GUI apps and fonts"
+  info "[5/${TOTAL_STEPS}] Installing GUI apps and fonts"
   if [ -n "${DEVTOOLS_SCRIPT:-}" ]; then
     bash "$DEVTOOLS_SCRIPT"
   elif [ "$REPOS" = true ] || [ -d "$REPOS_DIR/devtools" ]; then
@@ -104,7 +113,7 @@ if [ "$DEVTOOLS" = true ]; then
   else
     bash -c "$(curl -fsSL https://raw.githubusercontent.com/$GITHUB_USER/devtools/main/install.sh)"
   fi
-  success "[4/4] GUI apps and fonts installed"
+  success "[5/${TOTAL_STEPS}] GUI apps and fonts installed"
 fi
 
 echo ""
