@@ -79,6 +79,24 @@ jobs:
         run: |
           test -d "$HOME/.local/share/nvim/lazy/lazy.nvim"
           test -d "$HOME/.local/share/nvim/lazy/gruvbox.nvim"
+          test -d "$HOME/.local/share/nvim/lazy/blink.cmp"
+          test -d "$HOME/.local/share/nvim/lazy/conform.nvim"
+          test -d "$HOME/.local/share/nvim/lazy/gitsigns.nvim"
+          test -d "$HOME/.local/share/nvim/lazy/nvim-lspconfig"
+          test -d "$HOME/.local/share/nvim/lazy/mini.nvim"
+          test -d "$HOME/.local/share/nvim/lazy/telescope.nvim"
+          test -d "$HOME/.local/share/nvim/lazy/todo-comments.nvim"
+          test -d "$HOME/.local/share/nvim/lazy/nvim-treesitter"
+          test -d "$HOME/.local/share/nvim/lazy/which-key.nvim"
+
+      - name: Verify Neovim starts without errors
+        run: |
+          output=$(nvim --headless -c 'qa' 2>&1 || true)
+          if echo "$output" | grep -qE 'stack traceback|Error in config|Unexpected field'; then
+            echo "Neovim startup errors detected:"
+            echo "$output"
+            exit 1
+          fi
 
   test-devtools-flag:
     runs-on: ubuntu-latest
