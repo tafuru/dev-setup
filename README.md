@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/tafuru/dev-setup/actions/workflows/ci.yml/badge.svg)](https://github.com/tafuru/dev-setup/actions/workflows/ci.yml)
 
-Entry point for setting up a new machine.
+Set up a new development machine for macOS or Ubuntu/Debian. This repository is the entry point for the full environment: CLI tools, dotfiles, runtimes via `mise`, Neovim plugins, and optional GUI apps and fonts.
 
 ## Quick Start
 
@@ -10,7 +10,7 @@ Entry point for setting up a new machine.
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/tafuru/dev-setup/main/setup.sh)"
 ```
 
-Or clone and run:
+Or clone and run it locally:
 
 ```bash
 git clone https://github.com/tafuru/dev-setup.git
@@ -18,46 +18,64 @@ cd dev-setup
 bash setup.sh
 ```
 
-By default, `cmdtools` is installed via curl and `dotfiles` is managed by chezmoi. If `~/repos/github.com/tafuru/cmdtools` or `~/repos/github.com/tafuru/dotfiles` already exist, they are updated in place and used directly.
+If matching repositories already exist under `~/repos/github.com/tafuru/`, `setup.sh` updates them in place and reuses them.
 
-To also clone all repositories (dev-setup, cmdtools, dotfiles) under `~/repos/github.com/tafuru/` for local management:
+## When to Use This Repository
+
+- Use this repository when you want the full machine setup.
+- Use [cmdtools](https://github.com/tafuru/cmdtools), [dotfiles](https://github.com/tafuru/dotfiles), or [devtools](https://github.com/tafuru/devtools) directly only when you want a single layer on its own.
+
+## Options
+
+| Option | Description |
+|---|---|
+| `--repos` | Clone or update the companion repositories under `~/repos/github.com/tafuru/` and use them directly |
+| `--dotfiles <repo>` | Use a custom chezmoi-compatible dotfiles repository instead of `github.com/tafuru/dotfiles` |
+| `--devtools` | Install optional GUI apps and fonts via [devtools](https://github.com/tafuru/devtools) |
+| `--help` | Show usage information |
+
+Examples:
 
 ```bash
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/tafuru/dev-setup/main/setup.sh)" -- --repos
 ```
 
-To also install GUI apps and fonts ([devtools](https://github.com/tafuru/devtools)):
+```bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/tafuru/dev-setup/main/setup.sh)" -- --dotfiles github.com/yourname/dotfiles
+```
 
 ```bash
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/tafuru/dev-setup/main/setup.sh)" -- --devtools
 ```
 
-## Using Your Own Dotfiles
-
-If you have forked or created your own dotfiles repository compatible with chezmoi, pass it with `--dotfiles`:
-
-```bash
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/tafuru/dev-setup/main/setup.sh)" -- --dotfiles github.com/yourname/dotfiles
-```
-
 ## What It Does
 
-`setup.sh` runs the following in order:
+`setup.sh` runs the following steps in order:
 
-1. **[cmdtools](https://github.com/tafuru/cmdtools)** — Install CLI tools via Homebrew (macOS) or apt + GitHub Releases (Ubuntu/Debian)
-2. **[dotfiles](https://github.com/tafuru/dotfiles)** — Apply configuration files via chezmoi
-3. **mise install** — Install runtimes defined in `~/.config/mise/config.toml` (Rust, Node.js, Python, etc.)
-4. **Neovim plugins** — Sync plugins defined in `~/.config/nvim/init.lua` via lazy.nvim (skipped if `nvim` is not installed)
-5. **[devtools](https://github.com/tafuru/devtools)** *(optional, `--devtools`)* — Install GUI apps and fonts
+1. Install CLI tools via [cmdtools](https://github.com/tafuru/cmdtools)
+2. Apply configuration via [dotfiles](https://github.com/tafuru/dotfiles)
+3. Run `mise install` for runtimes defined in `~/.config/mise/config.toml`
+4. Sync Neovim plugins when `nvim` is available
+5. Optionally install GUI apps and fonts via [devtools](https://github.com/tafuru/devtools)
 
-## Repository Structure
+## Repository Responsibilities
 
 | Repository | Responsibility |
 |---|---|
-| [dev-setup](https://github.com/tafuru/dev-setup) | Setup entry point (this repository) |
+| [dev-setup](https://github.com/tafuru/dev-setup) | Full machine setup and orchestration |
 | [cmdtools](https://github.com/tafuru/cmdtools) | CLI tool installation |
-| [dotfiles](https://github.com/tafuru/dotfiles) | Configuration file management (chezmoi) |
-| [devtools](https://github.com/tafuru/devtools) | GUI apps and fonts (optional) |
+| [dotfiles](https://github.com/tafuru/dotfiles) | Configuration management with chezmoi |
+| [devtools](https://github.com/tafuru/devtools) | Optional GUI apps and fonts |
+
+## Platform Notes
+
+- On macOS, the companion repositories install tools and apps through Homebrew.
+- On Ubuntu/Debian, CLI setup uses apt plus Homebrew where needed, and GUI apps are handled separately by `devtools`.
+- `mise` runtime definitions come from the applied dotfiles, so the configuration layer stays separate from the setup orchestration.
+
+## Contributing
+
+README stays focused on how to use the full setup. For CI behavior, validation steps, and repository maintenance guidelines, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
